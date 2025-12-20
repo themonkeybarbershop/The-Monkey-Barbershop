@@ -3,511 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Monkey Barbershop</title>
+    <title>Spotify</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html {
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #000000;
-            overflow-x: hidden;
-            width: 100%;
-            padding-top: 91px;
-        }
-        header {
-            background-color: #ffffff;
-            border-bottom: 1px solid #000000;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-        .menu-icon,
-        .spacer {
-            flex: 1;
-            display: flex;
-            align-items: center;
-        }
-        .menu-icon {
-            justify-content: flex-start;
-        }
-        .spacer {
-            justify-content: flex-end;
-        }
-        .menu-icon .material-icons {
-            font-size: 32px;
-            cursor: pointer;
-            color: #000000;
-            transition: transform 0.3s;
-        }
-        .menu-icon .material-icons:hover {
-            transform: scale(1.1);
-        }
-        
-        .mobile-menu {
-            position: fixed;
-            top: 91px;
-            left: -100%;
-            width: 280px;
-            height: calc(100vh - 91px);
-            background-color: #ffffff;
-            border-right: 2px solid #000000;
-            transition: left 0.3s ease;
-            z-index: 999;
-            overflow-y: auto;
-        }
-        .mobile-menu.active {
-            left: 0;
-        }
-        .mobile-menu nav {
-            padding: 40px 20px;
-        }
-        .mobile-menu nav a {
-            display: block;
-            padding: 20px;
-            color: #000000;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            border-bottom: 1px solid #e0e0e0;
-            transition: all 0.3s;
-            letter-spacing: 1px;
-        }
-        .mobile-menu nav a:hover {
-            background-color: #000000;
-            color: #ffffff;
-            padding-left: 30px;
-        }
-        
-        .menu-overlay {
-            position: fixed;
-            top: 91px;
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 91px);
-            background-color: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            z-index: 998;
-        }
-        .menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .logo-section {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .logo-img {
-            height: 60px;
-            width: auto;
-            object-fit: contain;
-            max-width: 100%;
-        }
-        
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=1200');
-            background-size: cover;
-            background-position: center;
-            color: #ffffff;
-            padding: 100px 20px;
-            text-align: center;
-            width: 100%;
-        }
-        .hero h1 {
-            font-size: clamp(32px, 8vw, 56px);
-            margin-bottom: 20px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            word-wrap: break-word;
-        }
-        .hero p {
-            font-size: clamp(16px, 4vw, 22px);
-            margin-bottom: 40px;
-            font-weight: 300;
-        }
-        .btn {
-            display: inline-block;
-            padding: 18px 50px;
-            background-color: #ffffff;
-            color: #000000;
-            text-decoration: none;
-            font-weight: bold;
-            border: 2px solid #ffffff;
-            transition: all 0.3s ease;
-            letter-spacing: 1px;
-            max-width: 90%;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.1);
-            transition: left 0.4s ease;
-            z-index: -1;
-        }
-        .btn:hover::before {
-            left: 100%;
-        }
-        .btn:hover {
-            background-color: rgba(0, 0, 0, 0.95);
-            color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        
-        .services {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 80px 20px;
-            width: 100%;
-        }
-        .services h2 {
-            font-size: clamp(28px, 6vw, 42px);
-            text-align: center;
-            margin-bottom: 60px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            width: 100%;
-        }
-        .service-card {
-            background-color: #ffffff;
-            border: 2px solid #000000;
-            padding: 40px 30px;
-            text-align: center;
-            transition: all 0.3s;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 0;
-        }
-        .service-card:nth-child(1)::before {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.88)), url('https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=600');
-        }
-        .service-card:nth-child(2)::before {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.88)), url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600');
-        }
-        .service-card:nth-child(3)::before {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.88)), url('https://images.unsplash.com/photo-1621607512214-68297480165e?w=600');
-        }
-        .service-card:nth-child(4)::before {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.88)), url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600');
-        }
-        .service-card:nth-child(5)::before {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.88)), url('https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=600');
-        }
-        .service-card:nth-child(6)::before {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.88)), url('https://images.unsplash.com/photo-1621607512214-68297480165e?w=600');
-        }
-        .service-card:hover::before {
-            opacity: 1;
-        }
-        .service-card > * {
-            position: relative;
-            z-index: 1;
-        }
-        .service-card:hover {
-            color: #ffffff;
-            border-color: #ffffff;
-        }
-        .service-card h3 {
-            font-size: clamp(20px, 4vw, 26px);
-            margin-bottom: 20px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        .service-card p {
-            line-height: 1.8;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        .service-card .price {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        
-        .about {
-            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=1200');
-            background-size: cover;
-            background-position: center;
-            color: #ffffff;
-            padding: 80px 20px;
-            width: 100%;
-        }
-        .about-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-            width: 100%;
-        }
-        .about h2 {
-            font-size: clamp(28px, 6vw, 42px);
-            margin-bottom: 40px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        .about p {
-            font-size: clamp(16px, 3vw, 18px);
-            line-height: 1.9;
-            margin-bottom: 25px;
-        }
-        
-        .contact {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 80px 20px;
-            width: 100%;
-        }
-        .contact h2 {
-            font-size: clamp(28px, 6vw, 42px);
-            text-align: center;
-            margin-bottom: 60px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 50px;
-            width: 100%;
-        }
-        .contact-item {
-            text-align: center;
-            width: 100%;
-        }
-        .contact-item .material-icons {
-            font-size: 56px;
-            margin-bottom: 20px;
-        }
-        .contact-item h3 {
-            font-size: clamp(20px, 4vw, 26px);
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        .contact-item p {
-            font-size: 17px;
-            line-height: 1.8;
-        }
-        
-        footer {
-            background-color: #000000;
-            color: #ffffff;
-            text-align: center;
-            padding: 40px 20px;
-            border-top: 1px solid #333333;
-            width: 100%;
-        }
-        footer p {
-            font-size: 15px;
-            letter-spacing: 0.5px;
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                padding: 60px 15px;
-            }
-            .services,
-            .contact {
-                padding: 60px 15px;
-            }
-            .about {
-                padding: 60px 15px;
-            }
-            .services-grid,
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="menu-icon">
-                <span class="material-icons" id="menuToggle">menu</span>
-            </div>
-            <div class="logo-section">
-                <img src="https://themonkeybarbershop.netlify.app/erasebg-transformed.svg"
-                     alt="The Monkey Barbershop"
-                     class="logo-img">
-            </div>
-            <div class="spacer"></div>
-        </div>
-    </header>
-
-    <div class="menu-overlay" id="menuOverlay"></div>
-    <div class="mobile-menu" id="mobileMenu">
-        <nav>
-            <a href="#hero">Inicio</a>
-            <a href="#services">Servicios</a>
-            <a href="#about">Acerca de</a>
-            <a href="#contact">Contacto</a>
-        </nav>
+<div class="container">
+    <nav class="nav-pills">
+        <div class="profile-icon">S</div>
+        <button class="pill green">Todas</button>
+        <button class="pill">Música</button>
+        <button class="pill">Podcasts</button>
+    </nav>
+    <section>
+        <p class="subtitle">Explora una sesión basada en tus gustos musicales</p>
+        <h1 class="main-title">Escuchar ahora</h1>
+    </section>
+    <section class="songs-list" id="songsList"></section>
+    <section class="rhythm-section">
+        <h2 class="section-title">Sugerencias para hoy</h2>
+        <div class="playlists-container" id="playlistsContainer"></div>
+    </section>
+</div>
+<nav class="bottom-nav">
+    <div class="nav-item active" onclick="window.location.href='index.html'">
+        <span class="material-icons">home</span>
+        <span>Inicio</span>
     </div>
-
-    <section class="hero" id="hero">
-        <h1>THE MONKEY BARBERSHOP</h1>
-        <p>Estilo y elegancia en cada corte</p>
-        <a href="#contact" class="btn">Reserva tu cita</a>
-    </section>
-
-    <section class="services">
-        <h2 id="services">Nuestros Servicios</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <h3>Corte Clásico</h3>
-                <p>Corte tradicional con estilo atemporal. Incluye lavado y acabado profesional.</p>
-                <p class="price">$250</p>
+    <div class="nav-item" onclick="window.location.href='buscar.html'">
+        <span class="material-icons">search</span>
+        <span>Buscar</span>
+    </div>
+    <div class="nav-item">
+        <span class="material-icons">library_music</span>
+        <span>Tu biblioteca</span>
+    </div>
+    <div class="nav-item">
+        <span class="material-icons">add_circle_outline</span>
+        <span>Crear</span>
+    </div>
+</nav>
+<script>
+async function fetchMusicData() {
+    const response = await fetch('https://itunes.apple.com/mx/rss/topsongs/limit=200/json');
+    const data = await response.json();
+    if (!data.feed?.entry) return;
+    const normalized = data.feed.entry.map(item => ({
+        trackName: item['im:name'].label,
+        artistName: item['im:artist'].label,
+        artwork: item['im:image'][2].label.replace(/100x100bb\.jpg$/, '3000x3000bb.jpg').replace(/\d+x\d+bb\.jpg$/, '3000x3000bb.jpg'),
+        explicit: item['im:contentRating']?.label === 'Explicit'
+    }));
+    const shuffled = normalized.sort(() => Math.random() - 0.5);
+    displaySongs(shuffled.slice(0, 3));
+    displayPlaylists(shuffled.slice(3));
+}
+function displaySongs(items) {
+    const container = document.getElementById('songsList');
+    container.innerHTML = '';
+    items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'song-item';
+        div.innerHTML = `
+            <div class="song-cover" style="background-image:url('${item.artwork}')"></div>
+            <div class="song-info">
+                <div class="song-title">${item.trackName}</div>
+                <div class="song-artist">
+                    ${item.explicit ? '<span class="explicit-badge">E</span>' : ''}
+                    ${item.artistName}
+                </div>
             </div>
-            <div class="service-card">
-                <h3>Corte + Barba</h3>
-                <p>Servicio completo de corte de cabello y arreglo de barba con detalles precisos.</p>
-                <p class="price">$350</p>
-            </div>
-            <div class="service-card">
-                <h3>Barba Premium</h3>
-                <p>Arreglo de barba con toalla caliente, aceites especiales y acabado impecable.</p>
-                <p class="price">$200</p>
-            </div>
-            <div class="service-card">
-                <h3>Corte Infantil</h3>
-                <p>Corte especial para niños en ambiente divertido y profesional.</p>
-                <p class="price">$180</p>
-            </div>
-            <div class="service-card">
-                <h3>Diseño Especial</h3>
-                <p>Diseños personalizados y fade profesional según tu estilo único.</p>
-                <p class="price">$300</p>
-            </div>
-            <div class="service-card">
-                <h3>Afeitado Tradicional</h3>
-                <p>Afeitado clásico con navaja, toalla caliente y productos premium.</p>
-                <p class="price">$220</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="about">
-        <div class="about-content">
-            <h2 id="about">Acerca de Nosotros</h2>
-            <p>The Monkey Barbershop es más que una barbería, es un espacio donde el estilo y la tradición se encuentran. Nuestro equipo de barberos profesionales cuenta con años de experiencia y pasión por su oficio.</p>
-            <p>Nos especializamos en cortes clásicos y modernos, siempre adaptándonos a las necesidades y personalidad de cada cliente. Utilizamos únicamente productos de la más alta calidad para garantizar resultados excepcionales.</p>
-            <p>Visítanos y descubre por qué somos la barbería de confianza en la ciudad.</p>
-        </div>
-    </section>
-
-    <section class="contact" id="contact">
-        <h2>Contacto</h2>
-        <div class="contact-grid">
-            <div class="contact-item">
-                <span class="material-icons">location_on</span>
-                <h3>Dirección</h3>
-                <p>Av. Principal 123<br>Ciudad Juárez, Chihuahua</p>
-            </div>
-            <div class="contact-item">
-                <span class="material-icons">phone</span>
-                <h3>Teléfono</h3>
-                <p>+52 656 123 4567</p>
-            </div>
-            <div class="contact-item">
-                <span class="material-icons">schedule</span>
-                <h3>Horario</h3>
-                <p>Lunes a Sábado<br>10:00 AM - 8:00 PM<br>Domingo: Cerrado</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 The Monkey Barbershop. Todos los derechos reservados.</p>
-    </footer>
-
-    <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const menuOverlay = document.getElementById('menuOverlay');
-        const menuLinks = document.querySelectorAll('.mobile-menu nav a');
-
-        function toggleMenu() {
-            mobileMenu.classList.toggle('active');
-            menuOverlay.classList.toggle('active');
-        }
-
-        function closeMenu() {
-            mobileMenu.classList.remove('active');
-            menuOverlay.classList.remove('active');
-        }
-
-        menuToggle.addEventListener('click', toggleMenu);
-        menuOverlay.addEventListener('click', closeMenu);
-
-        menuLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                closeMenu();
-                
-                const targetId = link.getAttribute('href');
-                if (targetId.startsWith('#')) {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        const headerHeight = document.querySelector('header').offsetHeight;
-                        const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                }
-            });
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-                closeMenu();
-            }
-        });
-    </script>
+            <button class="more-btn">
+                <span class="material-icons">more_horiz</span>
+            </button>
+        `;
+        container.appendChild(div);
+    });
+}
+function displayPlaylists(items) {
+    const container = document.getElementById('playlistsContainer');
+    container.innerHTML = '';
+    items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'playlist-card';
+        card.innerHTML = `
+            <div class="playlist-cover" style="background-image:url('${item.artwork}')"></div>
+            <div class="playlist-title">${item.trackName}</div>
+            <div class="playlist-artists">${item.artistName}</div>
+        `;
+        container.appendChild(card);
+    });
+}
+fetchMusicData();
+</script>
 </body>
 </html>
