@@ -8,12 +8,15 @@ body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background: #000000;
     color: #ffffff;
-    padding: 16px 16px 80px;
+    padding: 16px 16px calc(80px + env(safe-area-inset-bottom));
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .container {
     max-width: 1400px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .nav-pills {
@@ -21,6 +24,15 @@ body {
     gap: 8px;
     align-items: center;
     margin-bottom: 24px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
+}
+
+.nav-pills::-webkit-scrollbar {
+    display: none;
 }
 
 .profile-icon {
@@ -51,6 +63,7 @@ body {
     white-space: nowrap;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .pill.green {
@@ -177,6 +190,8 @@ body {
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding-bottom: 8px;
+    margin-right: -16px;
+    padding-right: 16px;
 }
 
 .playlists-container::-webkit-scrollbar {
@@ -246,11 +261,14 @@ body {
     border-radius: 8px;
     padding: 12px 16px;
     gap: 12px;
+    width: 100%;
+    max-width: 100%;
 }
 
 .search-box .material-icons {
     font-size: 24px;
     color: #000000;
+    flex-shrink: 0;
 }
 
 .search-input {
@@ -261,6 +279,7 @@ body {
     font-weight: 400;
     color: #000000;
     background: transparent;
+    min-width: 0;
 }
 
 .search-input::placeholder {
@@ -271,6 +290,7 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+    width: 100%;
 }
 
 .category-card {
@@ -345,8 +365,8 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 64px;
-    padding: 0 16px;
+    height: calc(64px + env(safe-area-inset-bottom));
+    padding: 0 16px env(safe-area-inset-bottom) 16px;
     z-index: 1000;
 }
 
@@ -378,21 +398,20 @@ body {
 
 @media (max-width: 768px) {
     body {
-        padding: 12px 12px 80px;
+        padding: 12px 12px calc(80px + env(safe-area-inset-bottom));
     }
     
     .bottom-nav {
-        padding: 0 12px;
+        padding: 0 12px env(safe-area-inset-bottom) 12px;
+    }
+    
+    .playlists-container {
+        margin-right: -12px;
+        padding-right: 12px;
     }
     
     .nav-pills {
-        overflow-x: auto;
-        scrollbar-width: none;
         margin-bottom: 16px;
-    }
-    
-    .nav-pills::-webkit-scrollbar {
-        display: none;
     }
     
     .main-title {
@@ -420,7 +439,16 @@ body {
 
 @media (max-width: 480px) {
     body {
-        padding: 8px 8px 80px;
+        padding: 8px 8px calc(80px + env(safe-area-inset-bottom));
+    }
+    
+    .bottom-nav {
+        padding: 0 8px env(safe-area-inset-bottom) 8px;
+    }
+    
+    .playlists-container {
+        margin-right: -8px;
+        padding-right: 8px;
     }
     
     .nav-pills {
@@ -495,5 +523,41 @@ body {
     .category-image {
         width: 70px;
         height: 70px;
+    }
+}
+
+@supports (padding: max(0px)) {
+    body {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+    }
+    
+    .bottom-nav {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+    }
+    
+    @media (max-width: 768px) {
+        body {
+            padding-left: max(12px, env(safe-area-inset-left));
+            padding-right: max(12px, env(safe-area-inset-right));
+        }
+        
+        .bottom-nav {
+            padding-left: max(12px, env(safe-area-inset-left));
+            padding-right: max(12px, env(safe-area-inset-right));
+        }
+    }
+    
+    @media (max-width: 480px) {
+        body {
+            padding-left: max(8px, env(safe-area-inset-left));
+            padding-right: max(8px, env(safe-area-inset-right));
+        }
+        
+        .bottom-nav {
+            padding-left: max(8px, env(safe-area-inset-left));
+            padding-right: max(8px, env(safe-area-inset-right));
+        }
     }
 }
