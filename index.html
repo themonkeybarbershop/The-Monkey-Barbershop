@@ -4,100 +4,472 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page {
+            display: none;
+            padding: 16px;
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .nav-pills {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+        }
+
+        .nav-pills::-webkit-scrollbar {
+            display: none;
+        }
+
+        .profile-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1ed760;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #000;
+            flex-shrink: 0;
+        }
+
+        .pill {
+            padding: 0 16px;
+            height: 32px;
+            border-radius: 500px;
+            background: #181818;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .pill.green {
+            background: #1ed760;
+            color: #000;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #a7a7a7;
+            margin-bottom: 8px;
+        }
+
+        .main-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 16px;
+        }
+
+        .songs-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .song-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .song-cover {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            background: #181818;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+
+        .song-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .song-title {
+            font-size: 16px;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .song-artist {
+            font-size: 14px;
+            color: #a7a7a7;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .explicit-badge {
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            color: #000;
+            font-size: 9px;
+            font-weight: 700;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .section {
+            margin-top: 24px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .playlists-container {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            overflow-y: visible;
+            padding-bottom: 8px;
+        }
+
+        .playlists-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .playlist-card {
+            width: 160px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist-cover {
+            width: 160px;
+            height: 160px;
+            background: #181818;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+
+        .playlist-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            line-height: 1.3;
+        }
+
+        .playlist-artists {
+            font-size: 14px;
+            color: #a7a7a7;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            line-height: 1.4;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 8px;
+            padding: 12px 16px;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .search-box .material-icons {
+            font-size: 24px;
+            color: #000;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #000;
+            background: transparent;
+        }
+
+        .search-input::placeholder {
+            color: #000;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding-bottom: 0;
+        }
+
+        .category-card {
+            position: relative;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .category-card-pink { background: linear-gradient(135deg, #e91e63, #c2185b); }
+        .category-card-green { background: linear-gradient(135deg, #27856a, #1e6f5c); }
+        .category-card-purple { background: linear-gradient(135deg, #8e44ad, #6c3483); }
+        .category-card-yellow { background: linear-gradient(135deg, #b8860b, #8b6914); }
+        .category-card-blue { background: linear-gradient(135deg, #1976d2, #1565c0); }
+        .category-card-red { background: linear-gradient(135deg, #d32f2f, #c62828); }
+        .category-card-orange { background: linear-gradient(135deg, #f57c00, #e65100); }
+        .category-card-teal { background: linear-gradient(135deg, #00897b, #00695c); }
+
+        .category-card-content {
+            padding: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .category-image {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            transform: rotate(25deg) translate(8px, 8px);
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #000;
+            display: flex;
+            justify-content: space-around;
+            height: 64px;
+            padding: 0 16px;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-item .material-icons {
+            font-size: 26px;
+            color: #a7a7a7;
+        }
+
+        .nav-item span:not(.material-icons) {
+            font-size: 11px;
+            font-weight: 600;
+            color: #a7a7a7;
+        }
+
+        .nav-item.active .material-icons,
+        .nav-item.active span {
+            color: #fff;
+        }
+
+        @media (max-width: 480px) {
+            .main-title { font-size: 24px; }
+            .section-title { font-size: 18px; }
+            .playlist-card { width: 120px; }
+            .playlist-cover { width: 120px; height: 120px; }
+            .category-card { height: 90px; }
+            .category-image { width: 70px; height: 70px; }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <nav class="nav-pills">
-        <div class="profile-icon">S</div>
-        <button class="pill green">Todas</button>
-        <button class="pill">Música</button>
-        <button class="pill">Podcasts</button>
-    </nav>
-    <section>
-        <p class="subtitle">Explora una sesión basada en tus gustos musicales</p>
-        <h1 class="main-title">Escuchar ahora</h1>
-    </section>
-    <section class="songs-list" id="songsList"></section>
-    <section class="rhythm-section">
-        <h2 class="section-title">Sugerencias para hoy</h2>
-        <div class="playlists-container" id="playlistsContainer"></div>
-    </section>
-</div>
-<nav class="bottom-nav">
-    <div class="nav-item active" onclick="window.location.href='index.html'">
-        <span class="material-icons">home</span>
-        <span>Inicio</span>
-    </div>
-    <div class="nav-item" onclick="window.location.href='buscar.html'">
-        <span class="material-icons">search</span>
-        <span>Buscar</span>
-    </div>
-    <div class="nav-item">
-        <span class="material-icons">library_music</span>
-        <span>Tu biblioteca</span>
-    </div>
-    <div class="nav-item">
-        <span class="material-icons">add_circle_outline</span>
-        <span>Crear</span>
-    </div>
-</nav>
-<script>
-async function fetchMusicData() {
-    const response = await fetch('https://itunes.apple.com/mx/rss/topsongs/limit=200/json');
-    const data = await response.json();
-    if (!data.feed?.entry) return;
-    const normalized = data.feed.entry.map(item => ({
-        trackName: item['im:name'].label,
-        artistName: item['im:artist'].label,
-        artwork: item['im:image'][2].label.replace(/100x100bb\.jpg$/, '3000x3000bb.jpg').replace(/\d+x\d+bb\.jpg$/, '3000x3000bb.jpg'),
-        explicit: item['im:contentRating']?.label === 'Explicit'
-    }));
-    const shuffled = normalized.sort(() => Math.random() - 0.5);
-    displaySongs(shuffled.slice(0, 3));
-    displayPlaylists(shuffled.slice(3));
-}
-function displaySongs(items) {
-    const container = document.getElementById('songsList');
-    container.innerHTML = '';
-    items.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'song-item';
-        div.innerHTML = `
-            <div class="song-cover" style="background-image:url('${item.artwork}')"></div>
-            <div class="song-info">
-                <div class="song-title">${item.trackName}</div>
-                <div class="song-artist">
-                    ${item.explicit ? '<span class="explicit-badge">E</span>' : ''}
-                    ${item.artistName}
-                </div>
+    <div class="page active" id="home">
+        <div class="container">
+            <nav class="nav-pills">
+                <div class="profile-icon">S</div>
+                <button class="pill green">Todas</button>
+                <button class="pill">Música</button>
+                <button class="pill">Podcasts</button>
+            </nav>
+            <p class="subtitle">Explora una sesión basada en tus gustos musicales</p>
+            <h1 class="main-title">Escuchar ahora</h1>
+            <div class="songs-list" id="songs"></div>
+            <div class="section">
+                <h2 class="section-title">Sugerencias para hoy</h2>
+                <div class="playlists-container" id="playlists"></div>
             </div>
-            <button class="more-btn">
-                <span class="material-icons">more_horiz</span>
-            </button>
-        `;
-        container.appendChild(div);
-    });
-}
-function displayPlaylists(items) {
-    const container = document.getElementById('playlistsContainer');
-    container.innerHTML = '';
-    items.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'playlist-card';
-        card.innerHTML = `
-            <div class="playlist-cover" style="background-image:url('${item.artwork}')"></div>
-            <div class="playlist-title">${item.trackName}</div>
-            <div class="playlist-artists">${item.artistName}</div>
-        `;
-        container.appendChild(card);
-    });
-}
-fetchMusicData();
-</script>
+        </div>
+    </div>
+
+    <div class="page" id="search">
+        <div class="container">
+            <div class="header">
+                <div class="profile-icon">S</div>
+                <h1 class="main-title">Buscar</h1>
+            </div>
+            <div class="search-box">
+                <span class="material-icons">search</span>
+                <input type="text" class="search-input" placeholder="¿Qué quieres escuchar?">
+            </div>
+            <h2 class="section-title">Explorar todo</h2>
+            <div class="categories-grid" id="categories"></div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" data-page="home">
+            <span class="material-icons">home</span>
+            <span>Inicio</span>
+        </div>
+        <div class="nav-item" data-page="search">
+            <span class="material-icons">search</span>
+            <span>Buscar</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-icons">library_music</span>
+            <span>Biblioteca</span>
+        </div>
+    </nav>
+
+    <script>
+        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            item.onclick = () => {
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById(item.dataset.page).classList.add('active');
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                item.classList.add('active');
+            };
+        });
+
+        let data = [];
+        const genres = [
+            { name: 'Música', color: 'pink' },
+            { name: 'Podcasts', color: 'green' },
+            { name: 'Pop', color: 'blue' },
+            { name: 'Rock', color: 'red' },
+            { name: 'Hip-Hop', color: 'orange' },
+            { name: 'Latina', color: 'teal' },
+            { name: 'Electrónica', color: 'purple' },
+            { name: 'R&B', color: 'pink' },
+            { name: 'Country', color: 'yellow' },
+            { name: 'Jazz', color: 'blue' },
+            { name: 'Reggae', color: 'green' },
+            { name: 'Metal', color: 'red' }
+        ];
+
+        fetch('https://itunes.apple.com/mx/rss/topsongs/limit=200/json')
+            .then(r => r.json())
+            .then(d => {
+                data = d.feed.entry.map(i => ({
+                    title: i['im:name'].label,
+                    artist: i['im:artist'].label,
+                    image: i['im:image'][2].label.replace(/\d+x\d+bb\.jpg$/, '600x600bb.jpg'),
+                    explicit: i['im:contentRating']?.label === 'Explicit'
+                })).sort(() => Math.random() - 0.5);
+                
+                showSongs(data.slice(0, 3));
+                showPlaylists(data.slice(3));
+                showCategories();
+            });
+
+        function showSongs(items) {
+            document.getElementById('songs').innerHTML = items.map(i => `
+                <div class="song-item">
+                    <div class="song-cover" style="background-image:url('${i.image}')"></div>
+                    <div class="song-info">
+                        <div class="song-title">${i.title}</div>
+                        <div class="song-artist">
+                            ${i.explicit ? '<span class="explicit-badge">E</span>' : ''}
+                            ${i.artist}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showPlaylists(items) {
+            document.getElementById('playlists').innerHTML = items.map(i => `
+                <div class="playlist-card">
+                    <div class="playlist-cover" style="background-image:url('${i.image}')"></div>
+                    <div class="playlist-title">${i.title}</div>
+                    <div class="playlist-artists">${i.artist}</div>
+                </div>
+            `).join('');
+        }
+
+        function showCategories() {
+            document.getElementById('categories').innerHTML = genres.map(g => {
+                const track = data[Math.floor(Math.random() * data.length)];
+                return `
+                    <div class="category-card category-card-${g.color}">
+                        <div class="category-card-content">
+                            <div class="category-title">${g.name}</div>
+                        </div>
+                        <img class="category-image" src="${track.image}" alt="${g.name}">
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
 </body>
 </html>
